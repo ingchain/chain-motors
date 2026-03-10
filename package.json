@@ -1,0 +1,14 @@
+{
+  "name": "chain-motors",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "scripts": {
+    "start": "npm run start:web",
+    "start:all": "concurrently -n API,WEB -c blue,magenta \"npm run start:api\" \"npm run start:web\"",
+    "start:api": "\"c:/DEV CHAIN/.venv/Scripts/python.exe\" -m uvicorn app.main:app --app-dir apps/api --host 127.0.0.1 --port 8000 --reload",
+    "start:web": "npm --prefix apps/web start",
+    "build:web": "npm --prefix apps/web run build"
+  }
+}

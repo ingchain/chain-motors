@@ -48,6 +48,24 @@ Basado en `apps/web/.env.example`.
 
 ## Ejecucion local
 
+### Arranque rapido (solo frontend)
+
+```bash
+npm start
+```
+
+Esto inicia Astro desde la raiz del repo en `http://127.0.0.1:4321`.
+
+### Arranque rapido (frontend + backend)
+
+```bash
+npm run start:all
+```
+
+Esto levanta ambos servicios desde la raiz:
+- Frontend: `http://127.0.0.1:4321`
+- Backend: `http://127.0.0.1:8000`
+
 ### Backend
 
 ```bash
