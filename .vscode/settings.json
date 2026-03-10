@@ -1,0 +1,9 @@
+{
+  "python.defaultInterpreterPath": "c:/DEV CHAIN/.venv/Scripts/python.exe",
+  "python.analysis.extraPaths": [
+    "./apps/api"
+  ],
+  "python.analysis.diagnosticMode": "workspace",
+  "css.lint.unknownAtRules": "ignore",
+  "typescript.tsdk": "apps/web/node_modules/typescript/lib"
+}

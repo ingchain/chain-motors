@@ -1,0 +1,34 @@
+/* stylelint-disable at-rule-no-unknown */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-50: #f9e8fc;
+  --color-100: #eebff8;
+  --color-200: #e396f3;
+  --color-300: #d86dee;
+  --color-400: #ce44e9;
+  --color-500: #c31be4;
+  --color-600: #a016bb;
+  --color-700: #7d1192;
+  --color-800: #5a0c69;
+  --color-900: #3b0845;
+  --color-950: #130317;
+}
+
+body {
+  font-family: "Space Grotesk", sans-serif;
+  background: radial-gradient(circle at 20% 20%, rgba(195, 27, 228, 0.15), transparent 30%),
+    radial-gradient(circle at 80% 80%, rgba(160, 22, 187, 0.2), transparent 30%),
+    var(--color-950);
+  color: var(--color-100);
+}
+
+.neon-border {
+  border: 1px solid var(--color-500);
+  box-shadow: 0 0 20px rgba(195, 27, 228, 0.3);
+}
+/* stylelint-enable at-rule-no-unknown */

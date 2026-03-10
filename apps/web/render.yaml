@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: chain-motors-web
+    runtime: static
+    rootDir: apps/web
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: PUBLIC_API_URL
+        sync: false

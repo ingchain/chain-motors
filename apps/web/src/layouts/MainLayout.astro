@@ -1,0 +1,33 @@
+---
+import "../styles/global.css";
+
+const { title = "Chain Motors" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-chain-950 text-chain-100">
+    <header class="sticky top-0 z-50 border-b border-chain-500/40 bg-chain-950/80 backdrop-blur">
+      <nav class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
+        <a href="/" class="font-display text-lg uppercase tracking-widest text-chain-200">Chain Motors</a>
+        <ul class="flex gap-4 text-sm md:gap-8">
+          <li><a href="/" class="hover:text-chain-50">Inicio</a></li>
+          <li><a href="/servicios" class="hover:text-chain-50">Servicios</a></li>
+          <li><a href="/catalogo" class="hover:text-chain-50">Catalogo</a></li>
+          <li><a href="/quienes-somos" class="hover:text-chain-50">Quienes Somos</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="mx-auto w-full max-w-6xl px-4 py-10">
+      <slot />
+    </main>
+    <footer class="border-t border-chain-500/20 px-4 py-6 text-center text-xs text-chain-300">
+      Chain Motors - Sistema listo para Render
+    </footer>
+  </body>
+</html>
