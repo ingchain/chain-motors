@@ -1,6 +1,26 @@
 const API_BASE =
     import.meta.env.PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
+function normalizeApiError(payload: unknown): string {
+    if (!payload || typeof payload !== "object") {
+        return "Request failed";
+    }
+
+    const maybeDetail = (payload as { detail?: unknown }).detail;
+    if (typeof maybeDetail === "string") {
+        return maybeDetail;
+    }
+
+    if (Array.isArray(maybeDetail) && maybeDetail.length > 0) {
+        const first = maybeDetail[0] as { msg?: unknown };
+        if (typeof first?.msg === "string") {
+            return first.msg;
+        }
+    }
+
+    return "Request failed";
+}
+
 export async function apiRequest<T>(
     path: string,
     options: RequestInit = {},
@@ -20,8 +40,17 @@ export async function apiRequest<T>(
     });
 
     if (!response.ok) {
-        const error = await response.text();
-        throw new Error(error || "Request failed");
+        const text = await response.text();
+        if (!text) {
+            throw new Error("Request failed");
+        }
+
+        try {
+            const parsed = JSON.parse(text) as unknown;
+            throw new Error(normalizeApiError(parsed));
+        } catch {
+            throw new Error(text);
+        }
     }
 
     return (await response.json()) as T;

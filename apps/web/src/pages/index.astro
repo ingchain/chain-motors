@@ -1,24 +1,57 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import NeonCard from "../components/ui/NeonCard.astro";
+import ServiceCards from "../components/islands/ServiceCards";
+import ProductGrid from "../components/islands/ProductGrid";
 ---
 
 <MainLayout title="Chain Motors | Inicio">
-  <section class="grid gap-6 lg:grid-cols-2">
+  <section id="inicio" class="home-section scroll-mt-24 grid items-start gap-6 lg:grid-cols-2">
     <NeonCard>
-      <h1 class="font-display text-3xl uppercase tracking-widest text-chain-100 md:text-4xl">Motores del futuro</h1>
-      <p class="mt-4 text-chain-200/90">
-        Tienda virtual futurista para motores, accesorios y servicios premium. Rendimiento, precision y estilo en una sola plataforma.
+      <h1 class="font-display text-3xl font-semibold text-chain-100 md:text-4xl">Plataforma de ventas y servicio</h1>
+      <p class="mt-4 text-chain-300">
+        Gestiona catalogo, pedidos y citas desde una interfaz clara, rapida y orientada al negocio.
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
-        <a class="rounded-md border border-chain-500 bg-chain-500/20 px-4 py-2 text-sm shadow-neon" href="/catalogo">Ver Catalogo</a>
-        <a class="rounded-md border border-chain-500/70 px-4 py-2 text-sm" href="/servicios">Servicios Premium</a>
+        <a class="rounded-md border border-chain-500 bg-chain-500 px-4 py-2 text-sm font-medium text-white shadow-neon" href="/#catalogo">Ver Catalogo</a>
+        <a class="rounded-md border border-chain-700 bg-white px-4 py-2 text-sm font-medium text-chain-200" href="/#servicios">Ver Servicios</a>
       </div>
     </NeonCard>
     <NeonCard>
-      <p class="text-sm uppercase tracking-widest text-chain-300">Performance Hub</p>
-      <p class="mt-3 text-sm text-chain-200/90">
-        Arquitectura optimizada con Astro Islands, autenticacion JWT, MongoDB Atlas y paneles cliente/admin para gestion total.
+      <p class="text-sm font-semibold text-chain-300">Estado del sistema</p>
+      <p class="mt-3 text-sm text-chain-300">
+        Frontend con Astro + React Islands, backend FastAPI con JWT y base de datos MongoDB Atlas para operacion en tiempo real.
+      </p>
+    </NeonCard>
+  </section>
+
+  <section id="servicios" class="home-section scroll-mt-24">
+    <h2 class="font-display text-2xl font-semibold text-chain-100">Servicios</h2>
+    <p class="mt-2 text-sm text-chain-300">Seccion interactiva con carga diferida para mantener una experiencia rapida.</p>
+    <div class="mt-6">
+      <ServiceCards client:visible />
+    </div>
+  </section>
+
+  <section id="catalogo" class="home-section scroll-mt-24">
+    <h2 class="font-display text-2xl font-semibold text-chain-100">Catalogo de productos</h2>
+    <p class="mt-2 text-sm text-chain-300">Consulta de inventario en linea desde MongoDB Atlas via FastAPI.</p>
+    <div class="mt-6">
+      <ProductGrid client:visible />
+    </div>
+  </section>
+
+  <section id="quienes-somos" class="home-section scroll-mt-24 grid items-start gap-4 md:grid-cols-2">
+    <NeonCard>
+      <h2 class="font-display text-xl font-semibold text-chain-100">Quienes Somos</h2>
+      <p class="mt-3 text-sm text-chain-300">
+        Chain Motors fusiona tecnologia automotriz y experiencia digital para crear una tienda virtual de nueva generacion.
+      </p>
+    </NeonCard>
+    <NeonCard>
+      <h2 class="font-display text-xl font-semibold text-chain-100">Mision</h2>
+      <p class="mt-3 text-sm text-chain-300">
+        Ofrecer motores y servicios de alto rendimiento con una UX simple, segura y escalable.
       </p>
     </NeonCard>
   </section>

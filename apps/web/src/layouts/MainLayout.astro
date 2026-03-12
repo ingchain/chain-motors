@@ -1,33 +1,442 @@
 ---
 import "../styles/global.css";
+import NavAuthActions from "../components/islands/NavAuthActions";
 
-const { title = "Chain Motors" } = Astro.props;
+const { title = "Chain Motors", pageClass = "" } = Astro.props;
+const breadcrumbJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: "https://www.chainmotors.com/#inicio"
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Servicios",
+      item: "https://www.chainmotors.com/#servicios"
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Catalogo",
+      item: "https://www.chainmotors.com/#catalogo"
+    },
+    {
+      "@type": "ListItem",
+      position: 4,
+      name: "Quienes Somos",
+      item: "https://www.chainmotors.com/#quienes-somos"
+    }
+  ]
+});
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="brand-a" class={pageClass}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={breadcrumbJsonLd}></script>
+    <script is:inline>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem("chain-theme");
+          if (savedTheme === "brand-a" || savedTheme === "brand-b") {
+            document.documentElement.setAttribute("data-theme", savedTheme);
+          }
+        } catch {
+          /* no-op */
+        }
+      })();
+    </script>
   </head>
-  <body class="min-h-screen bg-chain-950 text-chain-100">
-    <header class="sticky top-0 z-50 border-b border-chain-500/40 bg-chain-950/80 backdrop-blur">
-      <nav class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
-        <a href="/" class="font-display text-lg uppercase tracking-widest text-chain-200">Chain Motors</a>
-        <ul class="flex gap-4 text-sm md:gap-8">
-          <li><a href="/" class="hover:text-chain-50">Inicio</a></li>
-          <li><a href="/servicios" class="hover:text-chain-50">Servicios</a></li>
-          <li><a href="/catalogo" class="hover:text-chain-50">Catalogo</a></li>
-          <li><a href="/quienes-somos" class="hover:text-chain-50">Quienes Somos</a></li>
-        </ul>
+  <body class="site-shell bg-chain-950 text-chain-100">
+    <header class="site-header sticky top-0 z-50 border-b border-chain-700 bg-white/95 backdrop-blur" role="banner">
+      <div class="site-header__top border-b border-chain-800">
+        <div class="site-header__inner mx-auto flex w-full max-w-6xl items-center gap-4 px-4 py-3">
+          <a href="/#inicio" class="site-brand inline-flex items-center gap-2 text-chain-100" aria-label="Ir a inicio Chain Motors">
+            <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" focusable="false" class="text-chain-500">
+              <rect x="1" y="1" width="26" height="26" rx="6" fill="currentColor" />
+              <path d="M8 18V10h2.2l3 5.1L16.1 10H20v8h-2.1v-4.2L15.3 18h-1.8l-2.6-4.2V18H8z" fill="#fff" />
+            </svg>
+            <span class="font-display text-lg font-semibold">Chain Motors</span>
+          </a>
+
+          <div class="site-header__utilities ml-auto hidden items-center gap-3 lg:flex">
+            <form action="/" method="get" role="search" class="flex items-center gap-2" aria-label="Busqueda global">
+              <label for="header-search" class="sr-only">Buscar en el sitio</label>
+              <input
+                id="header-search"
+                name="q"
+                type="search"
+                placeholder="Buscar recursos"
+                class="w-56 rounded-md border border-chain-700 bg-white px-3 py-2 text-sm text-chain-200 outline-none transition focus:border-chain-500"
+              />
+              <button type="submit" class="rounded-md border border-chain-700 bg-white px-3 py-2 text-sm text-chain-200 transition hover:bg-chain-900">
+                Buscar
+              </button>
+            </form>
+            <button
+              type="button"
+              data-theme-toggle
+              aria-label="Cambiar a tema noche"
+              aria-pressed="false"
+              class="site-theme-toggle rounded-md border border-chain-700 bg-white px-3 py-2 text-sm text-chain-200 transition hover:bg-chain-900"
+            >
+              <span aria-hidden="true">◐</span>
+              <span data-theme-label class="ml-1">Dia</span>
+            </button>
+            <a href="/#catalogo" class="rounded-md border border-chain-500 bg-chain-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700">Cotizar</a>
+            <NavAuthActions client:idle />
+          </div>
+
+          <button
+            type="button"
+            class="site-mobile-trigger ml-auto inline-flex h-10 w-10 items-center justify-center rounded-md border border-chain-700 text-chain-200 lg:hidden"
+            aria-label="Abrir menu principal"
+            aria-controls="site-navigation"
+            aria-expanded="false"
+            data-mobile-trigger
+          >
+            <span aria-hidden="true">☰</span>
+          </button>
+        </div>
+      </div>
+
+      <nav id="site-navigation" aria-label="Menu principal" class="site-nav hidden border-t border-chain-800 lg:block" data-mobile-nav>
+        <div class="site-nav__container">
+          <div class="site-nav__menu-row">
+            <ul class="site-nav__list" data-top-level-list>
+              <li><a href="/#inicio" class="inline-flex rounded px-2 py-2 text-chain-300 transition hover:bg-chain-900 hover:text-chain-100">Inicio</a></li>
+              <li><a href="/#servicios" class="inline-flex rounded px-2 py-2 text-chain-300 transition hover:bg-chain-900 hover:text-chain-100">Servicios</a></li>
+              <li class="site-nav__item site-nav__item--submenu">
+                <details class="site-nav__details">
+                  <summary class="site-nav__summary inline-flex rounded px-2 py-2 text-chain-300 transition hover:bg-chain-900 hover:text-chain-100">Recursos</summary>
+                  <ul class="site-nav__submenu">
+                    <li><a href="/#catalogo">Catalogo completo</a></li>
+                    <li><a href="/#quienes-somos">Acerca de la empresa</a></li>
+                    <li><a href="/auth/login">Acceso clientes</a></li>
+                    <li><a href="/auth/register">Crear cuenta</a></li>
+                  </ul>
+                </details>
+              </li>
+              <li><a href="/#catalogo" class="inline-flex rounded px-2 py-2 text-chain-300 transition hover:bg-chain-900 hover:text-chain-100">Catalogo</a></li>
+              <li><a href="/#quienes-somos" class="inline-flex rounded px-2 py-2 text-chain-300 transition hover:bg-chain-900 hover:text-chain-100">Quienes Somos</a></li>
+            </ul>
+          </div>
+
+          <div class="site-nav__mobile-utils mb-3 flex flex-col gap-2 lg:hidden">
+            <form action="/" method="get" role="search" class="flex items-center gap-2" aria-label="Busqueda en menu movil">
+              <label for="header-search-mobile" class="sr-only">Buscar en el sitio</label>
+              <input
+                id="header-search-mobile"
+                name="q"
+                type="search"
+                placeholder="Buscar recursos"
+                class="min-w-0 flex-1 rounded-md border border-chain-700 bg-white px-3 py-2 text-sm text-chain-200 outline-none transition focus:border-chain-500"
+              />
+              <button type="submit" class="rounded-md border border-chain-700 bg-white px-3 py-2 text-sm text-chain-200">Buscar</button>
+            </form>
+            <button
+              type="button"
+              data-theme-toggle
+              aria-label="Cambiar a tema noche"
+              aria-pressed="false"
+              class="site-theme-toggle rounded-md border border-chain-700 bg-white px-3 py-2 text-sm text-chain-200"
+            >
+              <span aria-hidden="true">◐</span>
+              <span data-theme-label class="ml-1">Dia</span>
+            </button>
+            <a href="/#catalogo" class="rounded-md border border-chain-500 bg-chain-500 px-3 py-2 text-center text-sm font-medium text-white">Cotizar</a>
+            <NavAuthActions client:idle />
+          </div>
+        </div>
+      </nav>
+
+      <nav aria-label="Breadcrumb" class="sr-only">
+        <ol>
+          <li><a href="/#inicio">Inicio</a></li>
+          <li><a href="/#servicios">Servicios</a></li>
+          <li><a href="/#catalogo">Catalogo</a></li>
+          <li><a href="/#quienes-somos">Quienes Somos</a></li>
+        </ol>
       </nav>
     </header>
-    <main class="mx-auto w-full max-w-6xl px-4 py-10">
+    <main class="site-main mx-auto w-full max-w-6xl px-4 py-10">
       <slot />
     </main>
-    <footer class="border-t border-chain-500/20 px-4 py-6 text-center text-xs text-chain-300">
-      Chain Motors - Sistema listo para Render
+    <footer
+      role="contentinfo"
+      class="site-footer footer-snap border-t border-chain-700 bg-white"
+      itemscope
+      itemtype="https://schema.org/Organization"
+    >
+      <div class="mx-auto w-full max-w-6xl px-4 py-10">
+        <h2 class="sr-only">Pie de pagina corporativo</h2>
+
+        <div class="site-footer__grid grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+          <section aria-labelledby="footer-resources-title" class="space-y-3">
+            <h3 id="footer-resources-title" class="font-display text-base font-semibold text-chain-100">Recursos y Mapa del Sitio</h3>
+            <nav aria-label="Navegacion de recursos">
+              <ul class="space-y-2 text-sm text-chain-300">
+                <li><a href="/#inicio" class="transition hover:text-chain-100">Inicio</a></li>
+                <li><a href="/#servicios" class="transition hover:text-chain-100">Servicios</a></li>
+                <li><a href="/#catalogo" class="transition hover:text-chain-100">Catalogo</a></li>
+                <li><a href="/#quienes-somos" class="transition hover:text-chain-100">Quienes Somos</a></li>
+                <li><a href="/auth/login" class="transition hover:text-chain-100">Login</a></li>
+                <li><a href="/auth/register" class="transition hover:text-chain-100">Registro</a></li>
+              </ul>
+            </nav>
+          </section>
+
+          <section aria-labelledby="footer-contact-title" class="space-y-3">
+            <h3 id="footer-contact-title" class="font-display text-base font-semibold text-chain-100">Contacto</h3>
+            <address class="not-italic text-sm text-chain-300" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+              <p class="font-semibold text-chain-200" itemprop="name">Chain Motors</p>
+              <p>
+                <span itemprop="streetAddress">Av. Industrial 1200</span>,
+                <span itemprop="addressLocality">Bogota</span>,
+                <span itemprop="addressCountry">CO</span>
+              </p>
+              <p class="mt-2">
+                <a href="tel:+573001112233" itemprop="telephone" class="transition hover:text-chain-100">+57 300 111 2233</a>
+              </p>
+              <p>
+                <a href="mailto:contacto@chainmotors.com" itemprop="email" class="transition hover:text-chain-100">contacto@chainmotors.com</a>
+              </p>
+            </address>
+            <nav aria-label="Redes sociales corporativas">
+              <ul class="flex items-center gap-3 text-sm text-chain-300">
+                <li><a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn de Chain Motors" class="transition hover:text-chain-100">LinkedIn</a></li>
+                <li><a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram de Chain Motors" class="transition hover:text-chain-100">Instagram</a></li>
+                <li><a href="https://www.youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube de Chain Motors" class="transition hover:text-chain-100">YouTube</a></li>
+              </ul>
+            </nav>
+          </section>
+
+          <section aria-labelledby="footer-newsletter-title" class="space-y-3">
+            <h3 id="footer-newsletter-title" class="font-display text-base font-semibold text-chain-100">Newsletter</h3>
+            <p class="text-sm text-chain-300">Recibe novedades tecnicas, productos y ofertas.</p>
+            <form class="space-y-3" method="post" action="/api/newsletter" novalidate>
+              <div>
+                <label for="newsletter-email" class="mb-1 block text-xs font-medium uppercase tracking-wide text-chain-400">Correo corporativo</label>
+                <input
+                  id="newsletter-email"
+                  name="email"
+                  type="email"
+                  required
+                  minlength="6"
+                  maxlength="120"
+                  autocomplete="email"
+                  inputmode="email"
+                  pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+                  aria-describedby="newsletter-help"
+                  class="w-full rounded-md border border-chain-700 bg-white px-3 py-2 text-sm text-chain-200 outline-none ring-0 transition focus:border-chain-500"
+                />
+                <p id="newsletter-help" class="mt-1 text-xs text-chain-400">Formato requerido: nombre@dominio.com</p>
+              </div>
+              <div>
+                <label class="flex items-start gap-2 text-xs text-chain-400">
+                  <input id="newsletter-consent" name="consent" type="checkbox" required class="mt-0.5 h-4 w-4 rounded border-chain-700" />
+                  <span>Acepto el tratamiento de datos para comunicaciones comerciales.</span>
+                </label>
+              </div>
+              <input type="text" name="company" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+              <button
+                type="submit"
+                class="rounded-md border border-chain-500 bg-chain-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+              >
+                Suscribirme
+              </button>
+            </form>
+          </section>
+
+          <section aria-labelledby="footer-legal-title" class="space-y-3">
+            <h3 id="footer-legal-title" class="font-display text-base font-semibold text-chain-100">Legal y Privacidad</h3>
+            <nav aria-label="Enlaces legales">
+              <ul class="space-y-2 text-sm text-chain-300">
+                <li><a href="/legal/privacidad" class="transition hover:text-chain-100">Politica de privacidad</a></li>
+                <li><a href="/legal/terminos" class="transition hover:text-chain-100">Terminos y condiciones</a></li>
+                <li><a href="/legal/cookies" class="transition hover:text-chain-100">Politica de cookies</a></li>
+                <li><a href="/legal/datos" class="transition hover:text-chain-100">Gestion de datos personales</a></li>
+              </ul>
+            </nav>
+            <p class="text-xs text-chain-400">
+              Cumplimiento de normativa aplicable de proteccion de datos y comercio electronico.
+            </p>
+          </section>
+        </div>
+
+        <div class="site-footer__meta mt-8 border-t border-chain-800 pt-4 text-xs text-chain-400">
+          <p>
+            <span itemprop="name">Chain Motors</span> - <span itemprop="description">Plataforma de venta y servicio automotriz</span>.
+            Todos los derechos reservados.
+          </p>
+        </div>
+      </div>
     </footer>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const themeButtons = Array.from(document.querySelectorAll("[data-theme-toggle]"));
+        const validThemes = ["brand-a", "brand-b"];
+
+        const applyTheme = (theme) => {
+          if (!validThemes.includes(theme)) {
+            return;
+          }
+
+          root.setAttribute("data-theme", theme);
+          try {
+            localStorage.setItem("chain-theme", theme);
+          } catch {
+            /* no-op */
+          }
+
+          const label = theme === "brand-b" ? "Noche" : "Dia";
+          const pressed = theme === "brand-b";
+
+          themeButtons.forEach((button) => {
+            if (!(button instanceof HTMLButtonElement)) {
+              return;
+            }
+
+            button.setAttribute("aria-pressed", String(pressed));
+            button.setAttribute("aria-label", pressed ? "Cambiar a tema dia" : "Cambiar a tema noche");
+            const text = button.querySelector("[data-theme-label]");
+            if (text instanceof HTMLElement) {
+              text.textContent = label;
+            }
+          });
+        };
+
+        const toggleTheme = () => {
+          const current = root.getAttribute("data-theme") || "brand-a";
+          applyTheme(current === "brand-b" ? "brand-a" : "brand-b");
+        };
+
+        applyTheme(root.getAttribute("data-theme") || "brand-a");
+        themeButtons.forEach((button) => {
+          if (!(button instanceof HTMLButtonElement)) {
+            return;
+          }
+
+          button.addEventListener("click", toggleTheme);
+        });
+
+        const mobileTrigger = document.querySelector("[data-mobile-trigger]");
+        const mobileNav = document.querySelector("[data-mobile-nav]");
+        const topLevelList = document.querySelector("[data-top-level-list]");
+
+        if (!mobileTrigger || !mobileNav) return;
+
+        const getFocusable = (container) => {
+          return Array.from(
+            container.querySelectorAll(
+              'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )
+          ).filter((el) => {
+            if (!(el instanceof HTMLElement)) return false;
+            return !el.hasAttribute("hidden") && el.offsetParent !== null;
+          });
+        };
+
+        const setMobileOpen = (open) => {
+          mobileTrigger.setAttribute("aria-expanded", String(open));
+          mobileNav.classList.toggle("hidden", !open);
+          document.body.classList.toggle("mobile-menu-open", open);
+          if (open) {
+            const focusable = getFocusable(mobileNav);
+            if (focusable[0] instanceof HTMLElement) {
+              focusable[0].focus();
+            }
+          } else {
+            mobileTrigger.focus();
+          }
+        };
+
+        mobileTrigger.addEventListener("click", () => {
+          const expanded = mobileTrigger.getAttribute("aria-expanded") === "true";
+          setMobileOpen(!expanded);
+        });
+
+        mobileNav.querySelectorAll("a[href]").forEach((link) => {
+          link.addEventListener("click", () => {
+            if (window.matchMedia("(max-width: 1023px)").matches) {
+              setMobileOpen(false);
+            }
+          });
+        });
+
+        if (topLevelList instanceof HTMLElement) {
+          const topLevelControls = Array.from(topLevelList.querySelectorAll(":scope > li > a"));
+
+          topLevelControls.forEach((control, index) => {
+            if (!(control instanceof HTMLElement)) return;
+            control.addEventListener("keydown", (event) => {
+              if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
+              event.preventDefault();
+
+              if (event.key === "Home") {
+                const first = topLevelControls[0];
+                if (first instanceof HTMLElement) first.focus();
+                return;
+              }
+
+              if (event.key === "End") {
+                const last = topLevelControls[topLevelControls.length - 1];
+                if (last instanceof HTMLElement) last.focus();
+                return;
+              }
+
+              const direction = event.key === "ArrowRight" ? 1 : -1;
+              const nextIndex = (index + direction + topLevelControls.length) % topLevelControls.length;
+              const next = topLevelControls[nextIndex];
+              if (next instanceof HTMLElement) next.focus();
+            });
+          });
+        }
+
+        document.addEventListener("keydown", (event) => {
+          const mobileOpen = mobileTrigger.getAttribute("aria-expanded") === "true";
+
+          if (event.key === "Tab" && mobileOpen && window.matchMedia("(max-width: 1023px)").matches) {
+            const focusable = getFocusable(mobileNav);
+            if (focusable.length === 0) return;
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            const active = document.activeElement;
+
+            if (!event.shiftKey && active === last) {
+              event.preventDefault();
+              if (first instanceof HTMLElement) first.focus();
+            } else if (event.shiftKey && active === first) {
+              event.preventDefault();
+              if (last instanceof HTMLElement) last.focus();
+            }
+            return;
+          }
+
+          if (event.key !== "Escape") return;
+          if (window.matchMedia("(max-width: 1023px)").matches) {
+            setMobileOpen(false);
+          }
+        });
+
+        document.addEventListener("click", (event) => {
+          const target = event.target;
+          if (!(target instanceof Node)) return;
+          if (mobileTrigger.getAttribute("aria-expanded") === "true" && !mobileNav.contains(target) && !mobileTrigger.contains(target)) {
+            setMobileOpen(false);
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

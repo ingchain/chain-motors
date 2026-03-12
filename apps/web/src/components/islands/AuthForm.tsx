@@ -71,16 +71,24 @@ export default function AuthForm({ mode }: Props) {
       });
 
       window.location.href = data.role === "admin" ? "/dashboard/admin" : "/dashboard/cliente";
-    } catch {
-      setError("No se pudo autenticar. Verifica tus datos.");
+    } catch (err) {
+      if (err instanceof Error && err.message.trim()) {
+        if (err.message.includes("Failed to fetch")) {
+          setError("No hay conexion con el servidor. Revisa API/CORS y vuelve a intentar.");
+        } else {
+          setError(err.message);
+        }
+      } else {
+        setError("No se pudo autenticar. Verifica tus datos.");
+      }
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <form onSubmit={onSubmit} className="neon-border mx-auto max-w-md rounded-xl bg-chain-900/30 p-6">
-      <h1 className="font-display text-xl uppercase tracking-wider text-chain-100">{submitLabel}</h1>
+    <form onSubmit={onSubmit} className="neon-border mx-auto max-w-md rounded-lg bg-white p-6">
+      <h1 className="font-display text-xl font-semibold text-chain-100">{submitLabel}</h1>
 
       {mode === "register" && (
         <input
@@ -121,7 +129,7 @@ export default function AuthForm({ mode }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="mt-5 w-full rounded-md border border-chain-500 bg-chain-500/20 px-3 py-2 text-sm font-medium text-chain-50 shadow-neon"
+        className="mt-5 w-full rounded-md border border-chain-500 bg-chain-500 px-3 py-2 text-sm font-medium text-white shadow-neon transition hover:bg-blue-700"
       >
         {loading ? "Procesando..." : submitLabel}
       </button>

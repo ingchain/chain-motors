@@ -3,6 +3,8 @@ import MainLayout from "../../layouts/MainLayout.astro";
 import AuthForm from "../../components/islands/AuthForm";
 ---
 
-<MainLayout title="Chain Motors | Login">
-  <AuthForm mode="login" client:load />
+<MainLayout title="Chain Motors | Login" pageClass="is-auth-page">
+  <section class="auth-page auth-page--center">
+    <AuthForm mode="login" client:load />
+  </section>
 </MainLayout>

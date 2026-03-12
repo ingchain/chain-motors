@@ -1,8 +1,15 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
-import AdminDashboard from "../../components/islands/AdminDashboard";
+import AuthRoleGate from "../../components/islands/AuthRoleGate";
+import AdminInventoryTable from "../../components/islands/AdminInventoryTable";
+import AdminOrderBoard from "../../components/islands/AdminOrderBoard";
 ---
 
 <MainLayout title="Chain Motors | Dashboard Admin">
-  <AdminDashboard client:load />
+  <AuthRoleGate requiredRole="admin" client:load />
+  <section class="grid gap-6">
+    <h1 class="font-display text-2xl font-semibold text-chain-100">Panel Administrador</h1>
+    <AdminInventoryTable client:visible />
+    <AdminOrderBoard client:visible />
+  </section>
 </MainLayout>

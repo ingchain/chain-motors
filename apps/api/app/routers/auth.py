@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
-from pydantic import EmailStr
+from pymongo.errors import ServerSelectionTimeoutError
 
 from app.core.config import settings
 from app.core.database import get_db
@@ -22,7 +22,14 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register", response_model=TokenOut)
 async def register(payload: RegisterIn, response: Response) -> TokenOut:
     db = get_db()
-    existing = await db.users.find_one({"email": payload.email})
+    try:
+        existing = await db.users.find_one({"email": payload.email})
+    except ServerSelectionTimeoutError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Base de datos no disponible. Configura MONGODB_URI o inicia MongoDB.",
+        ) from exc
+
     if existing:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
 
@@ -35,7 +42,13 @@ async def register(payload: RegisterIn, response: Response) -> TokenOut:
         "created_at": datetime.now(timezone.utc),
         "updated_at": datetime.now(timezone.utc),
     }
-    await db.users.insert_one(user_doc)
+    try:
+        await db.users.insert_one(user_doc)
+    except ServerSelectionTimeoutError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Base de datos no disponible. Configura MONGODB_URI o inicia MongoDB.",
+        ) from exc
 
     access_token = create_access_token(subject=user_doc["_id"], role=user_doc["role"])
     refresh_token = create_refresh_token(subject=user_doc["_id"])
@@ -52,14 +65,21 @@ async def register(payload: RegisterIn, response: Response) -> TokenOut:
         access_token=access_token,
         role=user_doc["role"],
         name=user_doc["name"],
-        email=EmailStr(user_doc["email"]),
+        email=user_doc["email"],
     )
 
 
 @router.post("/login", response_model=TokenOut)
 async def login(payload: LoginIn, response: Response) -> TokenOut:
     db = get_db()
-    user = await db.users.find_one({"email": payload.email})
+    try:
+        user = await db.users.find_one({"email": payload.email})
+    except ServerSelectionTimeoutError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Base de datos no disponible. Configura MONGODB_URI o inicia MongoDB.",
+        ) from exc
+
     if not user or not verify_password(payload.password, user["password_hash"]):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
@@ -78,7 +98,7 @@ async def login(payload: LoginIn, response: Response) -> TokenOut:
         access_token=access_token,
         role=user["role"],
         name=user["name"],
-        email=EmailStr(user["email"]),
+        email=user["email"],
     )
 
 
@@ -101,7 +121,7 @@ async def refresh_token(refresh_token: str | None = Cookie(default=None)) -> Tok
         access_token=access_token,
         role=user["role"],
         name=user["name"],
-        email=EmailStr(user["email"]),
+        email=user["email"],
     )
 
 

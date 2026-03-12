@@ -5,25 +5,25 @@ module.exports = {
     extend: {
       colors: {
         chain: {
-          50: "#F9E8FC",
-          100: "#EEBFF8",
-          200: "#E396F3",
-          300: "#D86DEE",
-          400: "#CE44E9",
-          500: "#C31BE4",
-          600: "#A016BB",
-          700: "#7D1192",
-          800: "#5A0C69",
-          900: "#3B0845",
-          950: "#130317"
+          50: "#FFFFFF",
+          100: "#0F172A",
+          200: "#1E293B",
+          300: "#334155",
+          400: "#475569",
+          500: "#2563EB",
+          600: "#93C5FD",
+          700: "#CBD5E1",
+          800: "#E2E8F0",
+          900: "#F1F5F9",
+          950: "#F8FAFC"
         }
       },
       fontFamily: {
-        display: ["Orbitron", "sans-serif"],
-        body: ["Space Grotesk", "sans-serif"]
+        display: ["Segoe UI", "Roboto", "Arial", "sans-serif"],
+        body: ["Segoe UI", "Roboto", "Arial", "sans-serif"]
       },
       boxShadow: {
-        neon: "0 0 20px rgba(195, 27, 228, 0.35)"
+        neon: "0 1px 3px rgba(15, 23, 42, 0.12)"
       }
     }
   },

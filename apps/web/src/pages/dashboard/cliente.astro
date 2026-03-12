@@ -1,8 +1,13 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
-import ClientDashboard from "../../components/islands/ClientDashboard";
+import AuthRoleGate from "../../components/islands/AuthRoleGate";
+import OrderStatusPanel from "../../components/islands/OrderStatusPanel";
 ---
 
 <MainLayout title="Chain Motors | Dashboard Cliente">
-  <ClientDashboard client:load />
+  <AuthRoleGate requiredRole="client" client:load />
+  <section>
+    <h1 class="mb-4 font-display text-2xl font-semibold text-chain-100">Panel Cliente</h1>
+    <OrderStatusPanel client:visible />
+  </section>
 </MainLayout>
